@@ -1,0 +1,134 @@
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.0.3/fullpage.min.js'></script>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.0.3/fullpage.min.css'>
+
+<div id="fullpage">
+	<div class="section active" id="section0">
+		<h1>First Page</h1>		
+	</div>
+	<div class="section" id="section1">
+	    <div class="slide active">
+			<div class="intro">
+				<h1>Create Sliders</h1>
+				<p>Not only vertical scrolling but also horizontal scrolling. With fullPage.js you will be able to add horizontal sliders in the most simple way ever.</p>				
+			</div>
+		</div>
+	    <div class="slide">
+			<div class="intro">
+				<h1>Simple</h1>
+				<p>Easy to use. Configurable and customizable.</p>
+			</div>
+		</div>
+	    <div class="slide">
+			<div class="intro">
+				<h1>Cool</h1>
+				<p>It just looks cool. Impress everybody with a simple and modern web design!</p>
+			</div>
+		</div>
+	    <div class="slide">
+			<div class="intro">
+				<h1>Compatible</h1>
+				<p>Working in modern and old browsers too! IE 8 users don't have the fault of using that horrible browser! Lets give them a chance to see your site in a proper way!</p>
+			</div>
+		</div>
+	    <div class="slide">
+			<div class="intro">
+				<h1>First Page</h1>
+				<p>Working in modern and old browsers too! IE 8 users don't have the fault of using that horrible browser! Lets give them a chance to see your site in a proper way!</p>
+			</div>
+		</div>
+	</div>
+	<div class="section" id="section2">
+		<div class="intro">
+			<h1>Fourth Page</h1>
+			<p>HTML markup example to define 4 sections.</p>
+		</div>
+	</div>
+	<div class="section" id="section3">
+		<div class="intro">
+			<h1>Fifth Page</h1>
+		</div>
+	</div>
+  
+</div>
+{% schema %}
+  {
+    "name":"HorizontalSliderOnScroll",
+    "class": "HorizontalSliderOnScroll",
+    "settings": [
+    ],
+    "presets": [
+      {
+        "name": "HorizontalSliderOnScroll"
+      }
+    ]
+  }
+{% endschema %}
+
+
+{% stylesheet %}
+body{
+	font-family: arial,helvetica;
+	color: #333;
+	color: rgba(0,0,0,0.5);
+}
+.wrap{
+	margin-left: auto;
+	margin-right: auto;
+	width: 960px;
+	position: relative;
+}
+#fullpage h1{
+	font-size: 6em;	
+}
+#fullpage p, #fullpage h2{
+	font-size: 2em;
+}
+#fullpage h2{
+	color:inherit;
+}
+#fullpage .section{
+	text-align:center;
+}
+
+#fullpage #section0 img,
+#fullpage #section1 img{
+	margin: 20px 0 0 0;
+}	
+#fullpage #section2 img,
+#fullpage #section3 img{
+	margin: 20px 0 0 52px;	
+}
+{% endstylesheet %}
+
+{% javascript %}
+$(document).ready(function() {
+  var slideIndexS = 0,
+      sliding = false;
+  
+  $('#fullpage').fullpage({
+    sectionsColor: ['#1bbc9b', '#4BBFC3', '#7BAABE', 'whitesmoke', '#ccddff'],
+    menu: '#menu',
+		css3: true,
+		licenseKey: 'OPEN-SOURCE-GPLV3-LICENSE',
+		afterSlideLoad: function(section, origin, destination, direction){
+			slideIndexS = destination.index+1;
+		},
+		onLeave: function(origin, destination, direction) {
+			console.log('Index: ' + origin.index + ' Slide Index: ' + slideIndexS);
+			//console.log(index, nextIndex, direction, sliding);
+			if (origin.index === 1 && !sliding) {
+				if (direction === 'down' && slideIndexS < 5) {
+					$.fn.fullpage.moveSlideRight();
+					return false;
+				} else if (direction === 'up' && slideIndexS > 1) {
+					$.fn.fullpage.moveSlideLeft();
+					return false;
+				}
+			} else if (sliding) {
+				return false;
+			}
+		}
+	});
+});
+{% endjavascript %}

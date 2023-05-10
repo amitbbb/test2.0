@@ -1,0 +1,300 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js" integrity="sha512-8E3KZoPoZCD+1dgfqhPbejQBnQfBXe8FuwL4z/c8sTrgeDMFEnoyTlH3obB4/fV+6Sg0a0XF+L/6xS4Xx1fUEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/animation.gsap.min.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script> -->
+
+{{ 'dogs-vertical-scroll-slider.css' | asset_url | stylesheet_tag }}
+<div class="pinContainer" id="pinContainer">
+  {% for block in section.blocks %}
+    {% if forloop.index == 1 %}
+  <section class="panel one">
+    <div class="slide-content">
+      <div class="left-content">
+        <h2>{{ block.settings.sub_heading }}</h2>
+        <h3>{{ block.settings.main-heading }}</h3>
+        {{ block.settings.description }}
+        <div class="slide-button">
+          <a href="{{ block.settings.btn_url }}">{{ block.settings.btn_text }}</a>
+        </div>
+      </div>
+      <div class="right-content">
+        <img src="{{ block.settings.slide_img | img_url: 'master' }}"  alt="{{ block.settings.main-heading }}"/>
+      </div>
+    </div>
+  </section>
+      {% elsif forloop.index == 2 %}
+  <section class="panel two">
+      <div class="slide-content">
+        <div class="left-content">
+          <h2>{{ block.settings.sub_heading }}</h2>
+          <h3>{{ block.settings.main-heading }}</h3>
+          {{ block.settings.description }}
+          <div class="slide-button">
+            <a href="{{ block.settings.btn_url }}">{{ block.settings.btn_text }}</a>
+          </div>
+        </div>
+        <div class="right-content">
+          <img src="{{ block.settings.slide_img | img_url: 'master' }}"  alt="{{ block.settings.main-heading }}"/>
+        </div>
+      </div>
+  </section>
+      {% elsif forloop.index == 3 %}
+  <section class="panel three">
+      <div class="slide-content">
+        <div class="left-content">
+          <h2>{{ block.settings.sub_heading }}</h2>
+          <h3>{{ block.settings.main-heading }}</h3>
+          {{ block.settings.description }}
+          <div class="slide-button">
+            <a href="{{ block.settings.btn_url }}">{{ block.settings.btn_text }}</a>
+          </div>
+        </div>
+        <div class="right-content">
+          <img src="{{ block.settings.slide_img | img_url: 'master' }}"  alt="{{ block.settings.main-heading }}"/>
+        </div>
+      </div>
+  </section>
+      {% elsif forloop.index == 4 %}
+  <section class="panel four">
+      <div class="slide-content">
+        <div class="left-content">
+          <h2>{{ block.settings.sub_heading }}</h2>
+          <h3>{{ block.settings.main-heading }}</h3>
+          {{ block.settings.description }}
+          <div class="slide-button">
+            <a href="{{ block.settings.btn_url }}">{{ block.settings.btn_text }}</a>
+          </div>
+        </div>
+        <div class="right-content">
+          <img src="{{ block.settings.slide_img | img_url: 'master' }}"  alt="{{ block.settings.main-heading }}"/>
+        </div>
+      </div>
+  </section>
+      {% elsif forloop.index == 5 %}
+  <section class="panel five">
+      <div class="slide-content">
+        <div class="left-content">
+          <h2>{{ block.settings.sub_heading }}</h2>
+          <h3>{{ block.settings.main-heading }}</h3>
+          {{ block.settings.description }}
+          <div class="slide-button">
+            <a href="{{ block.settings.btn_url }}">{{ block.settings.btn_text }}</a>
+          </div>
+        </div>
+        <div class="right-content">
+          <img src="{{ block.settings.slide_img | img_url: 'master' }}"  alt="{{ block.settings.main-heading }}"/>
+        </div>
+      </div>
+  </section>
+  {% endif %}
+{% endfor %}
+</div>
+{% schema %}
+  {
+    "name": "Vertical Scroll Slider",
+    "class": "vertical-scroll-slider",
+    "settings": [
+    ],
+    "max_blocks": 5,
+    "blocks": [
+      {
+    	"type": "Slides",
+    	"name": "Slides",
+    	"settings": [
+          {
+            "type": "text",
+            "id": "sub_heading",
+            "label": "Sub Heading"
+          },
+          {
+            "type": "text",
+            "id": "main-heading",
+            "label": "Heading"
+          },
+          {
+            "type": "richtext",
+            "id": "description",
+            "label": "Description"
+          },
+          {
+           "type": "image_picker",
+            "id": "slide_img",
+            "label": "SlideImage"
+          },
+          {
+            "type": "url",
+            "id": "btn_url",
+            "label": "Button Url"
+          },
+          {
+            "type": "text",
+            "id": "btn_text",
+            "label": "Button Text"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Vertical Scroll Slider"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+.slide-content{
+  background: #F9E8C2;
+  padding: 0 212px 0 195px;
+  padding-right: 130px;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.slide-content .left-content{
+  max-width: calc(37% - 70px);
+}
+.slide-content .right-content{
+  max-width: calc(63% - 70px);
+}
+.slide-content .right-content img{
+  width: 100%;
+  display: block;
+}
+.slide-content h2{
+  font-family: 'poppins-light';
+  font-style: italic;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 54px;
+  margin: 0;
+  color:#33332D;
+}
+.slide-content h3{
+  font-family: 'Gotham';
+  font-weight: 350;
+  font-size: 60px;
+  line-height: 67px;
+  letter-spacing: -3px;
+  color: #33332D;
+  margin: 0;
+}
+.slide-content p{
+  font-family: 'poppins-light';
+  font-style: normal;
+  font-weight: 300;
+  font-size: 24px;
+  line-height: 36px; 
+  color: #33332D;
+  margin: 0;
+  margin-top: 32px;
+}
+.slide-button{
+  max-width: 200px;
+  background: #000;
+  height: 60px;
+  border-radius: 4px;
+  margin-top: 78px;
+}
+.slide-button a{
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 27px;
+  color: #fff;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+  body {
+	 margin: 0;
+	 padding: 0;
+	 height: 100vh;
+}
+ .pinContainer {
+	 width: 100vw;
+	 height: 100vh;
+	 overflow: hidden;
+}
+ .panel {
+	 width: 100vw;
+	 height: 100vh;
+	 position: absolute;
+}
+ .panel.one {
+	 z-index: 4;
+	 background: red;
+}
+ .panel.two {
+	 background: black;
+	 z-index: 3;
+}
+ .panel.three {
+	 background: red;
+	 z-index: 2;
+}
+ .panel.four {
+	 background: green;
+	 z-index: 1;
+}
+ .hide {
+	 opacity: 0;
+}
+ .bg {
+	 width: 100%;
+	 height: 100%;
+	 position: absolute;
+	 top: 0;
+	 left: 0;
+}
+ .bg img {
+	 object-fit: cover;
+	 height: 100%;
+	 width: 100%;
+}
+ .bg ~ .layer {
+	 position: relative;
+	 z-index: 2;
+}
+ .additionalContent {
+	 margin: 400px 0;
+}
+ 
+{% endstylesheet %}
+
+
+
+{% javascript %}
+  $(function() {
+  // wait for document ready
+
+  // init
+  var controller = new ScrollMagic.Controller();
+
+  // define movement of panels
+  var wipeAnimation = new TimelineMax()
+    .to(".panel.one", 1, { y: "-100%", ease: Linear.easeNone })
+    .to(".panel.two", 1, { y: "-100%", ease: Linear.easeNone })
+    .to(".panel.three", 1, { y: "-100%", ease: Linear.easeNone })
+    .to(".panel.four", 1, { y: "-100%", ease: Linear.easeNone });
+
+  // create scene to pin and link animation
+  new ScrollMagic.Scene({
+    triggerElement: ".pinContainer",
+    triggerHook: "onLeave",
+    duration: "800%"
+  })
+    .setPin(".pinContainer")
+    .setTween(wipeAnimation)
+    //.addIndicators() add indicators (requires plugin)
+    .addTo(controller);
+});
+
+{% endjavascript %}

@@ -1,0 +1,21 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "bedded8e-1de5-4d23-bbaa-ba85ed936e7a": {
+      "type": "HorizontalSliderOnScroll",
+      "settings": {
+      }
+    }
+  },
+  "order": [
+    "main",
+    "bedded8e-1de5-4d23-bbaa-ba85ed936e7a"
+  ]
+}

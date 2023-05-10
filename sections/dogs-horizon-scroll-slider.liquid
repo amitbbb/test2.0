@@ -1,0 +1,284 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.14.2/TweenMax.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.3/ScrollMagic.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.3/plugins/animation.gsap.js"></script>
+<!--script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.3/plugins/debug.addIndicators.js"></script-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollToPlugin.min.js"></script>
+{{ 'slick.min.css' | asset_url | stylesheet_tag }} 
+{{ 'dogs-horizon-scroll.css' | asset_url | stylesheet_tag }} 
+<button class="button" id="scrollPrev">Previous</button>
+<button class="button" id="scrollNext">Next</button> 
+<div class="vertical-section-wrapper">
+  <div class="section section--vertical" id="second">
+    <div class="block-list desktop">
+{% for block in section.blocks %}
+    <div class="block-list__item{% if forloop.first %} active{% endif %}" data-index="{{ forloop.index }}" id="block-list__item-{{ forloop.index }}">
+      <div class="block-list__item-inner">
+        <div class="left-content">
+          <h2>{{ block.settings.sub_heading }}</h2>
+          <h3>{{ block.settings.main-heading }}</h3>
+          {{ block.settings.description }}
+        </div>
+        <div class="right-content">
+          <img src="{{ block.settings.slide_img | img_url: 'master' }}"  alt="{{ block.settings.main-heading }}"/>
+          <div class="info_wrap">
+            <div class="yellow-box">{{ block.settings.prod_name }}</div>
+            <p class="prod_info">{{ block.settings.abt_prod }}</p>
+          </div>
+        </div>
+      </div>
+  </div>
+{% endfor %}
+    </div>
+
+
+
+    <div class="block-list-mobile">
+{% for block in section.blocks %}
+    <div class="block-list__item-mobile">
+      <div class="block-list__item-inner">
+        <div class="left-content">
+          <h2>{{ block.settings.sub_heading }}</h2>
+          <h3>{{ block.settings.main-heading }}</h3>
+          {{ block.settings.description }}
+        </div>
+        <div class="right-content">
+          <img src="{{ block.settings.slide_img | img_url: 'master' }}"  alt="{{ block.settings.main-heading }}"/>
+          <div class="info_wrap">
+            <div class="yellow-box">{{ block.settings.prod_name }}</div>
+            <p class="prod_info">{{ block.settings.abt_prod }}</p>
+          </div>
+        </div>
+      </div>
+  </div>
+{% endfor %}
+    </div>
+
+    
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Dogs Horizon Scroll",
+    "class": "dogs-horizon-scroll",
+    "settings": [
+    ],
+    "blocks": [
+      {
+    	"type": "Slides",
+    	"name": "Slides",
+    	"settings": [
+          {
+            "type": "text",
+            "id": "sub_heading",
+            "default": "Whats inside matters",
+            "label": "Sub Heading"
+          },
+          {
+            "type": "text",
+            "id": "main-heading",
+            "default": "Clinically backed ingredients at the right price.",
+            "label": "Heading"
+          },
+          {
+            "type": "richtext",
+            "id": "description",
+            "default": "<p>Premium patented ingredients are the top dog when it comes to pet supplements. These scientifically backed ingredients are like the filet mignon of the supplement world, providing your furry friend with the best of the best.</p>",
+            "label": "Description"
+          },
+          {
+           "type": "image_picker",
+            "id": "slide_img",
+            "label": "SlideImage"
+          },
+          {
+           "type": "text",
+            "id": "prod_name",
+            "label": "Product Name"
+          },
+          {
+           "type": "text",
+            "id": "abt_prod",
+            "default": "Soothes the nervous system, supporting normal response to external stressors",
+            "label": "Product Info"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Dogs Horizon Scroll"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+  .dogs-horizon-scroll{
+    position: relative;
+  }
+  #scrollNext{
+    position: fixed;
+    top: 50%;
+    right: 0;
+    z-index: 99;
+    transform: translateY(-50%);
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  #scrollPrev{
+    position: fixed;
+    top: 50%;
+    left: 0;
+    z-index: 99;
+    transform: translateY(-50%);
+    opacity: 0;
+    visibility: hidden;
+  }
+  .btn-stick #scrollPrev, .btn-stick #scrollNext{
+    opacity: 1;
+    visibility: visible;
+  }
+  
+
+{% endstylesheet %}
+
+ 
+{% javascript %}
+  
+  var controller = new ScrollMagic.Controller();
+
+$(function () {
+  //var tween = TweenMax.to(".block-list", 1, {className: "+=scrollend"});
+  
+  var $block_list = $('.block-list'),
+      $block_item = $block_list.find('.block-list__item'),
+      block_list_width = $block_list.outerWidth(),
+      block_item_width = $block_item.outerWidth(),
+      total_width = block_item_width * $block_item.length,
+      travel_distance = total_width - block_list_width + 20;
+
+  var scene = new ScrollMagic.Scene({
+    triggerElement: "#second",
+    duration: '10650',
+    triggerHook: 0
+  })
+  .setPin('.block-list')  
+  //.setTween(tween)
+  .addTo(controller);
+  
+  scene.on('progress', function(e) {
+    var progress = e.progress,
+        move = -travel_distance * progress + "px";
+    $block_list.css({
+      transform: "translateX(" + move + ")"
+    });
+  });
+
+    $(document).on("click", "#scrollNext", function(){
+      if($(".block-list__item.active").next().length > 0) {
+        let elem = $(".block-list__item.active").next();
+        let id = "#block-list__item-"+$(".block-list__item.active").next().data("index");
+        
+        controller.scrollTo(id);
+        console.log("Next"); 
+      }
+    });
+
+  if ($(".dogs-horizon-scroll").length > 0) {
+    if ($(window).width() < 768) {
+      $(".dogs-horizon-scroll .block-list-mobile").slick({
+        infinite: false,
+        dots: false,
+        arrows: true,
+        slidesToShow: 1,
+        slidesToScroll: 1
+      });
+    }
+  } 
+/*
+$('#scrollNext').click(function(){
+        $('.block-list__item.active').animate({
+            width: "100%"
+        });
+});
+*/
+/*
+const $slidesContainer = $(".block-list.desktop");
+const $slides = $slidesContainer.children(".block-list__item");
+const $btnPrev = $("#scrollPrev");
+const $btnNext = $("#scrollNext");
+
+const imgWidth = $slides.first().width();
+let isSlideAnimating = false;
+
+// Position all the slides next to each other...
+$slides.each(function (i) {
+  const leftPos = i * imgWidth;
+
+  $(this).css("left", leftPos);
+});
+
+// Move the last slide in front of the first slide
+// in case the user pushes the "prev" button...
+$slides.last().prependTo($slidesContainer).css("left", -imgWidth);
+
+$btnPrev.click(prevSlide);
+$btnNext.click(nextSlide);
+
+function prevSlide() {
+  if (isSlideAnimating) {
+    return;
+  }
+
+  isSlideAnimating = true;
+
+  $slidesContainer
+    .children()
+    .last()
+    .css("left", -(imgWidth * 2))
+    .prependTo($slidesContainer);
+
+  $slides.animate({ left: "+=" + imgWidth }, 300, function () {
+    isSlideAnimating = false;
+  });
+}
+
+function nextSlide() {
+  if (isSlideAnimating) {
+    return;
+  }
+
+  isSlideAnimating = true;
+
+  $slidesContainer
+    .children()
+    .first()
+    .css("left", imgWidth * ($slides.length - 1))
+    .appendTo($slidesContainer);
+
+  $slides.animate({ left: "-=" + imgWidth }, 300, function () {
+    isSlideAnimating = false;
+  });
+}
+*/
+
+}); 
+
+$(document).ready(function() {
+  var s = $(".dogs-horizon-scroll");
+  var pos = s.position();					   
+  $(window).scroll(function() {
+      var windowpos = $(window).scrollTop();
+      if (windowpos <=11766.125) {
+        s.removeClass("btn-stick");
+          
+      } else {
+        s.addClass("btn-stick");
+      }
+  });
+});
+
+  
+{% endjavascript %}

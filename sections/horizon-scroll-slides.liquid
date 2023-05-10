@@ -1,0 +1,239 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js" integrity="sha512-8E3KZoPoZCD+1dgfqhPbejQBnQfBXe8FuwL4z/c8sTrgeDMFEnoyTlH3obB4/fV+6Sg0a0XF+L/6xS4Xx1fUEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/animation.gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+
+{{ 'slick.min.css' | asset_url | stylesheet_tag }} 
+{{ 'horizon-scroll-slides.css' | asset_url | stylesheet_tag }}
+{% comment %}
+<div class="section section--vertical" id="second">
+    <div class="block-list">
+{% for block in section.blocks %}
+    <div class="block-list__item">
+      <div class="block-list__item-inner">
+        <div class="left-content"> 
+          <h2>{{ block.settings.sub_heading }}</h2>
+          <h3>{{ block.settings.main-heading }}</h3>
+          {{ block.settings.description }}
+        </div>
+        <div class="right-content">
+          <img src="{{ block.settings.slide_img | img_url: 'master' }}"  alt="{{ block.settings.main-heading }}"/>
+          <div class="info_wrap">
+            <div class="yellow-box">{{ block.settings.prod_name }}</div>
+            <p class="prod_info">{{ block.settings.abt_prod }}</p>
+          </div>
+        </div>
+      </div>
+  </div>
+{% endfor %}
+    </div>
+</div>
+{% endcomment %}
+
+<div class="horizontal-container1">
+  {% for block in section.blocks %}
+    <section class="panel" id="{{ block.id }}" style="background:{{ block.settings.color_code }}">
+       <div class="left-content">
+          <h2>{{ block.settings.sub_heading }}</h2>
+          <h3>{{ block.settings.main-heading }}</h3>
+          {{ block.settings.description }} 
+        </div>
+        <div class="right-content">
+          <img src="{{ block.settings.slide_img | img_url: 'master' }}"  alt="{{ block.settings.main-heading }}"/>
+          <div class="info_wrap">
+            <div class="yellow-box">{{ block.settings.prod_name }}</div>
+            <p class="prod_info">{{ block.settings.abt_prod }}</p>
+          </div>
+        </div>
+    </section>
+  {% endfor %}
+  
+{%comment %}
+  
+  <section class="panel orange">
+    TWO
+  </section>
+  <section class="panel purple">
+    THREE
+  </section>
+  <section class="panel green">
+    FOUR
+  </section>
+  <section class="panel gray">
+    FIVE
+  </section>
+  <section class="panel purple">
+    Seven
+  </section>
+  <section class="panel orange">
+    Eight
+  </section>
+  <section class="panel green">
+    Nine
+  </section>
+  <section class="panel gray">
+    Ten
+  </section>
+  <section class="panel purple">
+    Eleven
+  </section>
+  <section class="panel orange">
+    Twelve
+  </section>
+  <section class="panel green">
+    Thirteen
+  </section>
+  <section class="panel gray">
+    Fourteen
+  </section>
+  <section class="panel orange">
+    Fifteen
+  </section>
+  <section class="panel green">
+    Sixteen
+  </section>
+{% endcomment %}
+</div>
+
+
+{% schema %}
+  {
+    "name":"Horizon Scroll Slides",
+    "class": "horizon-scroll-slides",
+    "settings": [
+    ],
+    "blocks": [
+      {
+    	"type": "Slides",
+    	"name": "Slides",
+    	"settings": [
+          {
+            "type": "text",
+            "id": "sub_heading",
+            "default": "Whats inside matters",
+            "label": "Sub Heading"
+          },
+          {
+            "type": "text",
+            "id": "main-heading",
+            "default": "Clinically backed ingredients at the right price.",
+            "label": "Heading"
+          },
+          {
+            "type": "richtext",
+            "id": "description",
+            "default": "<p>Premium patented ingredients are the top dog when it comes to pet supplements. These scientifically backed ingredients are like the filet mignon of the supplement world, providing your furry friend with the best of the best.</p>",
+            "label": "Description"
+          },
+          {
+           "type": "image_picker",
+            "id": "slide_img",
+            "label": "SlideImage"
+          },
+          {
+            "type": "color",
+            "id": "color_code",
+            "label": "Add Color"
+          },
+          {
+           "type": "text",
+            "id": "prod_name",
+            "label": "Product Name"
+          },
+          {
+           "type": "text",
+            "id": "abt_prod",
+            "default": "Soothes the nervous system, supporting normal response to external stressors",
+            "label": "Product Info"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Horizon Scroll Slides"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+
+{% endstylesheet %}
+
+{% javascript %} 
+
+
+      gsap.registerPlugin(ScrollTrigger);
+
+let duration = 10,
+    sections = gsap.utils.toArray(".panel"),
+    sectionIncrement = duration / (sections.length - 1),
+    tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".horizontal-container1",
+        pin: true,
+        scrub: 1,
+        snap: 1 / (sections.length - 1),
+        start: "top top",
+        end: "+=6000"
+      }
+    });
+
+tl.to(sections, {
+  xPercent: -100 * (sections.length - 1),
+  duration: duration,
+  ease: "none"
+});  
+
+
+
+// everything below this is just for the fading/scaling up which is NOT scrubbed - it's all dynamic, triggered when each section enters/leaves so that the fading/scaling occurs at a consistent rate no matter how fast you scroll!
+/*sections.forEach((section, index) => {
+  let tween = gsap.from(section, {
+    opacity: 0, 
+    scale: 1,
+    duration: 0.2, 
+    force3D: true, 
+    paused: true
+  });
+  addSectionCallbacks(tl, {
+    start: sectionIncrement * (index - 0.99),
+    end: sectionIncrement * (index + 0.99),
+    onEnter: () => tween.play(),
+    onLeave: () => tween.reverse(),
+    onEnterBack: () => tween.play(),
+    onLeaveBack: () => tween.reverse()
+  });
+  index || tween.progress(1); // the first tween should be at its end (already faded/scaled in)
+});*/
+
+
+
+
+
+// helper function that lets us define a section in a timeline that spans between two times (start/end) and lets us add onEnter/onLeave/onEnterBack/onLeaveBack callbacks
+function addSectionCallbacks(timeline, {start, end, param, onEnter, onLeave, onEnterBack, onLeaveBack}) {
+  let trackDirection = animation => { // just adds a "direction" property to the animation that tracks the moment-by-moment playback direction (1 = forward, -1 = backward)
+    let onUpdate = animation.eventCallback("onUpdate"), // in case it already has an onUpdate
+        prevTime = animation.time();
+    animation.direction = animation.reversed() ? -1 : 1;
+    animation.eventCallback("onUpdate", () => {
+      let time = animation.time();
+      console.log(time);
+      if (prevTime !== time) {
+        animation.direction = time < prevTime ? -1 : 1;
+        prevTime = time;
+      }
+      onUpdate && onUpdate.call(animation);
+    });
+  },
+      empty = v => v; // in case one of the callbacks isn't defined
+  timeline.direction || trackDirection(timeline); // make sure direction tracking is enabled on the timeline
+  start >= 0 && timeline.add(() => ((timeline.direction < 0 ? onLeaveBack : onEnter) || empty)(param), start);
+  end <= timeline.duration() && timeline.add(() => ((timeline.direction < 0 ? onEnterBack : onLeave) || empty)(param), end);
+}
+
+  
+{% endjavascript %}

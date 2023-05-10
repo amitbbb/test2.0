@@ -1,0 +1,32 @@
+.popup-wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.5);
+    width: 100%;
+    z-index: 999999;
+    height: 100vh;
+  display: none;  
+}
+
+.popup-wrapper .popup-main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: fixed;
+    z-index: 999999;
+    max-width: 1200px;
+    background: #fff;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    padding-right: 107px;
+    padding-left: 11px;
+    box-shadow: 0 4px 50px #0000000d;
+    border-radius: 40px;
+    min-height: 50vh;
+    max-height: 100%;
+}
